@@ -23,10 +23,12 @@ import javax.sql.DataSource;
 import javax.transaction.Transactional;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,17 +59,25 @@ public class Test {
         System.out.println(stringObjectMap);
     }
     @org.junit.Test
-    public void parseing(){
+    public void parseing() throws Exception {
         QueryRunner queryRunner=new QueryRunner(dataSource);
         User user = new User();
         user.setPassword("adimin");
         user.setDate(new Date());
         user.setDate1(new java.sql.Date(System.currentTimeMillis()));
         user.setABoolean(true);
+        List<String> list=new ArrayList<>();
+        list.add("海淀");
+        list.add("mianyang");
+        List<BigInteger> longs=new ArrayList<>();
+        longs.add(new BigInteger("123"));
+        longs.add(new BigInteger("13"));
+        user.setPhone(longs);
+        user.setAddress(list);
         System.out.println(user);
+        queryRunner.parseBean(user);
         StringBuilder stringBuilder = queryRunner.fillStatementWithBean(user);
         System.out.println(stringBuilder);
-
 
     }
 }
